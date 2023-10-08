@@ -286,6 +286,7 @@ function main() {
         alertMessage('刷课状态：第' + (count + 1) + '个/' + list.length + '个');
         classList[count] = list[count]?.querySelector('.content-box')?.querySelector('section');
         let classInfo = classList[count]?.querySelector('.tag')?.querySelector('use')?.getAttribute('xlink:href');
+
         if (classInfo?.includes('shipin') && play === true) { // 视频处理
           play = false;
           classList[count].click();
@@ -319,6 +320,7 @@ function main() {
               bofang();
               function bofang() {
                 let classInfo1 = a[count1]?.querySelector('.tag').querySelector('use').getAttribute('xlink:href');
+                alertMessage(count1);
                 let play = true;
                 if (classInfo1?.includes('shipin') && play === true) {
                   play = false;
@@ -341,8 +343,56 @@ function main() {
                       }, 2000);
                     }
                   }, 3000)
-                } else if (classInfo1 && !classInfo1.includes('shipin') && play === true) {
-                  alertMessage('不是视频');
+                } else if (classInfo1?.includes('taolun') && play === true) {
+                  play = false;
+                  a[count1].click();
+                  alertMessage('开始讨论。');
+                  // 具体逻辑
+                  setTimeout(() => {
+                    let progress = document.getElementsByClassName("progress-wrap")[0];
+                    if (progress.innerText == '未发言') {
+                      let contents = document.getElementsByClassName("cont_detail word-break")
+                      if (contents.length > 0) {
+                        let content = contents[0].innerText;
+                        document.getElementsByClassName("el-textarea__inner")[0].value = content;
+                        let inputEvent = new Event('input', {bubbles: true});
+                        document.getElementsByClassName("el-textarea__inner")[0].dispatchEvent(inputEvent);
+                        setTimeout(() => {
+                          document.getElementsByClassName("el-button submitComment el-button--primary addColor")[0].click();
+                          count1++;
+                          localStorage.setItem('userCount', count1);
+                          alertMessage(`讨论完毕`);
+                          history.back();
+                          setTimeout(() => {
+                            bofang();
+                          }, 2000);
+
+                        }, 1000)
+                      } else {
+                        alertMessage(`无讨论内容，跳过`);
+                        count1++;
+                        localStorage.setItem('userCount', count1);
+                        alertMessage(`讨论完毕`);
+                        history.back();
+                        setTimeout(() => {
+                          bofang();
+                        }, 2000);
+                      }
+                    } else {
+                      alertMessage(`已讨论，跳过`);
+                      count1++;
+                      localStorage.setItem('userCount', count1);
+                      alertMessage(`讨论完毕`);
+                      history.back();
+                      setTimeout(() => {
+                        bofang();
+                      }, 2000);
+                    }
+
+                  }, 2000)
+                } else if (classInfo1 && !classInfo1.includes('shipin') && !classInfo1.includes('taolun') && play === true) {
+                  alertMessage("其他类型，跳过");
+                  alertMessage(classInfo1);
                   count1++;
                   localStorage.setItem('userCount', count1);
                   bofang();
