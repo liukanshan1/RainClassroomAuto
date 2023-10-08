@@ -390,7 +390,15 @@ function main() {
                     }
 
                   }, 2000)
-                } else if (classInfo1 && !classInfo1.includes('shipin') && !classInfo1.includes('taolun') && play === true) {
+                } else if (classInfo1?.includes('zuoye') && play === true) {
+                  play = false;
+                  a[count1].click();
+                  alertMessage('开始作业。');
+                  // 具体逻辑
+                  setTimeout(() => {
+
+                  }, 2000)
+                } else if (classInfo1 && play === true) {
                   alertMessage("其他类型，跳过");
                   alertMessage(classInfo1);
                   count1++;

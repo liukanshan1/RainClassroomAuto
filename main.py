@@ -1,5 +1,7 @@
 import os
 import pickle
+import time
+
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
@@ -53,7 +55,22 @@ def start_auto(browser, class_name):
     ActionChains(browser).move_to_element(el).click().perform()
     wait = WebDriverWait(browser, 10)
     wait.until(EC.presence_of_all_elements_located((By.XPATH, '//*[@class="className"]')))
-    els = browser.find_elements(By.XPATH, '//*[@class="className"]')
+    # 获取当前页面的高度
+    last_height = browser.execute_script("return document.body.scrollHeight")
+    # 模拟下拉操作，直到滑动到底部
+    while True:
+        # 模拟下拉操作
+        browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        # 等待页面加载
+        time.sleep(1)
+        # 获取当前页面的高度
+        new_height = browser.execute_script("return document.body.scrollHeight")
+        # 判断是否已经到达页面底部
+        if new_height == last_height:
+            break
+        # 继续下拉操作
+        last_height = new_height
+    els = browser.find_elements(By.CLASS_NAME, 'className')
     for i in els:
         if i.text == class_name:
             ActionChains(browser).move_to_element(i).click().perform()
@@ -73,6 +90,6 @@ if __name__ == '__main__':
     #save_cookies(browser)
 
     load_cookies(browser, 'rb8uvymgiykwvd5uye4xnp0t56nyap3m')
-    start_auto(browser, '2023秋-形势与政策课')
+    start_auto(browser, '2022春-(2021-2022-2)-044102453-72')
 
     pass
