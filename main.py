@@ -72,8 +72,7 @@ if __name__ == '__main__':
 
     #save_cookies(browser)
 
-    load_cookies(browser, 'wz3e6yaimeojo0xcsddouft2qkgn5yv3')
-
+    load_cookies(browser, 'rb8uvymgiykwvd5uye4xnp0t56nyap3m')
     start_auto(browser, '2023秋-形势与政策课')
 
     pass
