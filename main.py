@@ -106,7 +106,7 @@ if __name__ == '__main__':
     while True:
         cn = input("请输入课程名, 输入1默认形势与政策:  ")
         if cn == "1":
-            cn = '2022春-(2021-2022-2)-044102453-72'
+            cn = '2023秋-形势与政策课'
         # 登录
         browser = getBrowser('./script.txt')
         uid = save_cookies(browser)
