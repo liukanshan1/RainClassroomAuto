@@ -102,12 +102,18 @@ def start_auto(browser, class_name):
 
 
 if __name__ == '__main__':
-    browser = getBrowser('./script.txt')
-    uid = save_cookies(browser)
-    browser.quit()
-
-    browser = getBrowser('./script.txt')
-    load_cookies(browser, uid)
-    start_auto(browser, '2022春-(2021-2022-2)-044102453-72')
-
-    input('输入任意键退出')
+    browsers = []
+    while True:
+        cn = input("请输入课程名, 输入1默认形势与政策")
+        if cn == "1":
+            cn = '2022春-(2021-2022-2)-044102453-72'
+        # 登录
+        browser = getBrowser('./script.txt')
+        uid = save_cookies(browser)
+        browser.quit()
+        # 刷课
+        browser = getBrowser('./script.txt')
+        load_cookies(browser, uid)
+        start_auto(browser, cn)
+        browsers.append(browser)
+    # input('输入任意键退出')
