@@ -38,6 +38,23 @@ def save_cookies(browser):
     cookies = browser.get_cookies()
     path = './' + cookies[0].get('value') + '.pkl'
     pickle.dump(cookies, open(path, 'wb'))
+    return cookies[0].get('value')
+
+
+def get_login(browser):
+    browser.get(r'https://changjiang.yuketang.cn/web?next=/v2/web/index&type=3')
+    el = browser.find_element(By.XPATH, '//*[@id="support-socket"]/div/img[2]')  # 找到元素
+    img_url = el.get_attribute('src')
+    return img_url
+
+
+def get_token(browser):
+    wait = WebDriverWait(browser, 100)
+    wait.until(EC.url_contains('https://changjiang.yuketang.cn/v2/web/index?date'))
+    cookies = browser.get_cookies()
+    path = './' + cookies[0].get('value') + '.pkl'
+    pickle.dump(cookies, open(path, 'wb'))
+    return cookies[0].get('value')
 
 
 def load_cookies(browser, id):
@@ -86,10 +103,11 @@ def start_auto(browser, class_name):
 
 if __name__ == '__main__':
     browser = getBrowser('./script.txt')
+    uid = save_cookies(browser)
+    browser.quit()
 
-    #save_cookies(browser)
-
-    load_cookies(browser, 'rb8uvymgiykwvd5uye4xnp0t56nyap3m')
+    browser = getBrowser('./script.txt')
+    load_cookies(browser, uid)
     start_auto(browser, '2022春-(2021-2022-2)-044102453-72')
 
-    pass
+    input('输入任意键退出')
